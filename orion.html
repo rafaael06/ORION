@@ -1,0 +1,975 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+				<title>ORION – Orientação Inteligente de Futuro</title>
+				<style>
+					:root {
+					--primary: #2563eb;
+					--primary-dark: #1e40af;
+					--secondary: #0f172a;
+					--accent: #06b6d4;
+					--bg-body: #f8fafc;
+					--bg-card: #ffffff;
+					--text-main: #334155;
+					--text-light: #64748b;
+					--border: #e2e8f0;
+					--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+					--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+					--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+					--radius: 12px;
+					--safe-top: env(safe-area-inset-top, 40px);
+					--safe-bottom: env(safe-area-inset-bottom, 20px);
+					--premium-gold: #f59e0b;
+					}
+
+					* {
+					box-sizing: border-box;
+					-webkit-tap-highlight-color: transparent;
+					}
+
+					body {
+					margin: 0;
+					font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+					background-color: var(--bg-body);
+					color: var(--text-main);
+					line-height: 1.6;
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+					overflow-x: hidden;
+					min-height: 100vh;
+					display: flex;
+					flex-direction: column;
+					-webkit-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					user-select: none;
+					-webkit-touch-callout: none;
+					}
+
+					.container {
+					width: min(92vw, 1200px);
+					margin: 0 auto;
+					padding: 0 clamp(1rem, 3vw, 2rem);
+					}
+
+					.hidden { display: none !important; }
+
+					.btn {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0.8rem 1.6rem;
+					border-radius: 8px;
+					font-weight: 600;
+					font-size: 1rem;
+					cursor: pointer;
+					transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+					border: none;
+					text-decoration: none;
+					gap: 8px;
+					outline: none;
+					}
+
+					.btn-primary {
+					background-color: var(--primary);
+					color: white;
+					box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+					}
+
+					.btn-primary:active {
+					transform: scale(0.98);
+					background-color: var(--primary-dark);
+					}
+
+					.btn-outline {
+					background-color: transparent;
+					border: 2px solid var(--border);
+					color: var(--text-main);
+					}
+
+					.btn-outline:active {
+					background-color: #f1f5f9;
+					}
+
+					.btn-lg {
+					padding: 1.2rem 2.5rem;
+					font-size: 1.1rem;
+					}
+
+					header {
+					background-color: var(--bg-card);
+					border-bottom: 1px solid var(--border);
+					position: sticky;
+					top: 0;
+					z-index: 100;
+					height: 70px;
+					display: flex;
+					align-items: center;
+					padding-top: var(--safe-top);
+					box-sizing: content-box;
+					}
+
+					.header-content {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					width: 100%;
+					}
+
+					.logo {
+					font-size: 1.5rem;
+					font-weight: 800;
+					color: var(--secondary);
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					letter-spacing: -0.5px;
+					cursor: pointer;
+					user-select: none;
+					}
+
+					.nav-links {
+					display: flex;
+					gap: 20px;
+					align-items: center;
+					}
+
+					.nav-item {
+					color: var(--text-light);
+					font-weight: 500;
+					font-size: 0.95rem;
+					cursor: pointer;
+					transition: color 0.2s;
+					}
+
+					.nav-item:hover { color: var(--primary); }
+
+					.progress-wrapper {
+					position: absolute;
+					bottom: -2px;
+					left: 0;
+					width: 100%;
+					height: 4px;
+					background: #e2e8f0;
+					display: none;
+					}
+
+					.progress-bar {
+					height: 100%;
+					background: var(--primary);
+					width: 0%;
+					transition: width 0.3s ease;
+					}
+
+					main {
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					padding-bottom: 40px;
+					}
+
+					.screen {
+					display: none;
+					animation: fadeIn 0.4s ease-out;
+					width: 100%;
+					}
+
+					.screen.active {
+					display: block;
+					}
+
+					@keyframes fadeIn {
+					from { opacity: 0; transform: translateY(10px); }
+					to { opacity: 1; transform: translateY(0); }
+					}
+
+					.hero-section {
+					background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+					color: white;
+					padding: 4rem 0 6rem;
+					text-align: center;
+					position: relative;
+					}
+
+					.hero-content h1 {
+					font-size: clamp(2rem, 6vw, 3.5rem);
+					font-weight: 800;
+					margin-bottom: 1.5rem;
+					line-height: 1.1;
+					}
+
+					.hero-content p {
+					font-size: clamp(1rem, 2.5vw, 1.25rem);
+					color: #cbd5e1;
+					max-width: 800px;
+					margin: 0 auto 2.5rem;
+					}
+
+					.features-grid {
+					display: grid;
+					grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+					gap: 1.5rem;
+					margin-top: -3rem;
+					position: relative;
+					z-index: 10;
+					}
+
+					.feature-card {
+					background: white;
+					padding: 2rem;
+					border-radius: var(--radius);
+					box-shadow: var(--shadow-lg);
+					border: 1px solid var(--border);
+					}
+
+					.feature-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+					.feature-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--secondary); }
+
+					.test-container {
+					max-width: 800px;
+					margin: 2rem auto;
+					background: white;
+					padding: clamp(1.5rem, 5vw, 3rem);
+					border-radius: var(--radius);
+					box-shadow: var(--shadow-md);
+					border: 1px solid var(--border);
+					}
+
+					.question-header { margin-bottom: 2rem; }
+					.question-number { color: var(--primary); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+					.question-text { font-size: clamp(1.2rem, 4vw, 1.75rem); color: var(--secondary); font-weight: 700; line-height: 1.3; }
+
+					.options-grid { display: grid; gap: 1rem; margin-top: 2rem; }
+					.option-card {
+					padding: 1.25rem;
+					border: 2px solid var(--border);
+					border-radius: var(--radius);
+					cursor: pointer;
+					transition: all 0.2s;
+					display: flex;
+					align-items: center;
+					gap: 1rem;
+					}
+					.option-card.selected { border-color: var(--primary); background-color: #eff6ff; }
+
+					.scale-wrapper {
+					display: flex;
+					justify-content: space-between;
+					margin: 3rem 0;
+					position: relative;
+					padding: 0 10px;
+					}
+					.scale-wrapper::before {
+					content: '';
+					position: absolute;
+					top: 50%; left: 0; right: 0;
+					height: 2px; background: var(--border);
+					z-index: 0;
+					}
+					.scale-point {
+					width: clamp(40px, 10vw, 60px);
+					height: clamp(40px, 10vw, 60px);
+					border-radius: 50%;
+					background: white;
+					border: 2px solid var(--border);
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-weight: 700;
+					cursor: pointer;
+					z-index: 1;
+					transition: all 0.2s;
+					}
+					.scale-point.selected { background: var(--primary); border-color: var(--primary); color: white; transform: scale(1.1); }
+
+					.scale-labels { display: flex; justify-content: space-between; color: var(--text-light); font-size: 0.85rem; margin-top: -1.5rem; }
+
+					.auth-container { max-width: 450px; margin: 4rem auto; background: white; padding: 2.5rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); text-align: center; }
+					.auth-input { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+
+					.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+					.plan-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; transition: all 0.3s; position: relative; display: flex; flex-direction: column; }
+					.plan-card.featured { border: 2px solid var(--premium-gold); }
+					.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--premium-gold); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
+
+					.dashboard-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; margin-top: 2rem; }
+					.sidebar-card { background: white; padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border); text-align: center; position: sticky; top: 90px; height: fit-content; }
+					.profile-avatar { width: 80px; height: 80px; background: #eff6ff; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1rem; }
+
+					.result-card { background: white; padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+					.result-header { border-bottom: 1px solid #f1f5f9; margin-bottom: 1.5rem; padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+
+					.area-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8fafc; border-radius: 8px; margin-bottom: 0.75rem; border-left: 4px solid var(--primary); }
+
+					.premium-lock-wrapper { position: relative; }
+					.blur-content { filter: blur(8px); opacity: 0.4; pointer-events: none; }
+					.lock-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.5); backdrop-filter: blur(4px); border-radius: var(--radius); }
+
+					.legal-container { max-width: 800px; margin: 2rem auto; background: white; padding: 3rem; border-radius: var(--radius); box-shadow: var(--shadow-md); }
+					.legal-content { max-height: 400px; overflow-y: auto; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin: 1.5rem 0; font-size: 0.9rem; color: var(--text-light); }
+
+					.support-form { display: flex; flex-direction: column; gap: 1rem; }
+					.support-textarea { width: 100%; min-height: 150px; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; resize: vertical; }
+
+					footer { background: var(--secondary); color: #94a3b8; padding: 3rem 0; margin-top: auto; }
+					.footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+					.footer-link { cursor: pointer; transition: color 0.2s; }
+					.footer-link:hover { color: white; }
+
+					@keyframes spin { to { transform: rotate(360deg); } }
+
+					@media (max-width: 850px) {
+					.dashboard-grid { grid-template-columns: 1fr; }
+					.sidebar-card { position: static; }
+					.nav-links { display: none; }
+					}
+				</style>
+			</head>
+	<body>
+
+		<header>
+			<div class="container header-content">
+				<div class="logo" onclick="resetApp()">
+					🌌 ORION
+				</div>
+				<nav class="nav-links">
+					<span class="nav-item" onclick="resetApp()">Início</span>
+					<button class="btn btn-primary" onclick="startTest()">Fazer Diagnóstico</button>
+				</nav>
+			</div>
+			<div class="progress-wrapper" id="progress-wrapper">
+				<div class="progress-bar" id="progress-bar"></div>
+			</div>
+		</header>
+
+		<main id="main-content">
+
+			<!-- Welcome Screen -->
+			<div id="screen-welcome" class="screen active">
+				<div class="hero-section">
+					<div class="container hero-content">
+						<h1>
+							Mapeie seu Futuro Profissional<br>com Inteligência Artificial</h1>
+						<p>Um diagnóstico científico de 70 pontos que analisa comportamento, tendências de mercado e risco de automação para guiar sua carreira.</p>
+						<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+							<button class="btn btn-primary btn-lg" onclick="showScreen('screen-auth')">Começar Diagnóstico</button>
+							<button class="btn btn-outline btn-lg" style="color: white; border-color: rgba(255,255,255,0.3);" onclick="scrollToFeatures()">Saiba Mais</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="container" id="features-section">
+					<div class="features-grid">
+						<div class="feature-card">
+							<span class="feature-icon">🧠</span>
+							<h3 class="feature-title">Perfil Profundo</h3>
+							<p style="color: var(--text-light);">70 perguntas validadas para extrair seu verdadeiro potencial cognitivo e socioemocional.</p>
+						</div>
+						<div class="feature-card">
+							<span class="feature-icon">🤖</span>
+							<h3 class="feature-title">Risco de IA 2026</h3>
+							<p style="color: var(--text-light);">Previsões atualizadas sobre como a automação afetará sua área nos próximos anos.</p>
+						</div>
+						<div class="feature-card">
+							<span class="feature-icon">🎯</span>
+							<h3 class="feature-title">Plano de Ação</h3>
+							<p style="color: var(--text-light);">Recomendações personalizadas de universidades e experiências práticas.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Auth Screen -->
+			<div id="screen-auth" class="screen">
+				<div class="auth-container">
+					<h2 style="margin-top: 0;">Crie sua conta</h2>
+					<p style="color: var(--text-light); margin-bottom: 2rem;">Salve seu progresso e acesse seu relatório de qualquer lugar.</p>
+
+					<input type="email" id="auth-email" class="auth-input" placeholder="Seu melhor e-mail">
+						<input type="password" id="auth-pass" class="auth-input" placeholder="Crie uma senha">
+
+							<button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="mockLogin()">Começar Teste</button>
+							<p style="font-size: 0.8rem; color: var(--text-light); margin-top: 1.5rem;">Ao continuar, você aceita nossos Termos de Uso.</p>
+						</div>
+			</div>
+
+			<!-- Test Screen -->
+			<div id="screen-test" class="screen">
+				<div class="container">
+					<div class="test-container">
+						<div id="question-container"></div>
+
+						<div style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+							<button class="btn btn-outline" id="btn-back" onclick="prevQuestion()">Voltar</button>
+							<button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">Próximo</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Analysis Screen -->
+			<div id="screen-analysis" class="screen">
+				<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center;">
+					<div style="width: 60px; height: 60px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 2rem;"></div>
+					<h2 id="analysis-title">Processando 70 pontos de dados</h2>
+					<p id="analysis-text" style="color: var(--text-light);">Cruzando seu perfil com tendências globais...</p>
+				</div>
+			</div>
+
+			<!-- Plans Screen -->
+			<div id="screen-plans" class="screen">
+				<div class="container" style="padding: 4rem 0; text-align: center;">
+					<h2 style="font-size: 2.5rem;">Seu diagnóstico está pronto</h2>
+					<p style="color: var(--text-light);">Escolha como deseja visualizar seus resultados.</p>
+
+					<div class="pricing-grid">
+						<div class="plan-card" onclick="selectPlan('base')">
+							<h3>Relatório Básico</h3>
+							<div style="font-size: 2.5rem; font-weight: 800; margin: 1rem 0;">Grátis</div>
+							<ul style="text-align: left; padding: 0; list-style: none; flex-grow: 1;">
+								<li style="padding: 0.5rem 0;">✅ Perfil Comportamental</li>
+								<li style="padding: 0.5rem 0;">✅ Top 3 Áreas de Match</li>
+								<li style="padding: 0.5rem 0; color: #cbd5e1;">❌ Risco de Automação IA</li>
+								<li style="padding: 0.5rem 0; color: #cbd5e1;">❌ Guia de Universidades</li>
+							</ul>
+							<button class="btn btn-outline" style="width: 100%;">Ver Grátis</button>
+						</div>
+
+						<div class="plan-card featured" onclick="selectPlan('premium')">
+							<div class="plan-badge">RECOMENDADO</div>
+							<h3>Relatório Premium</h3>
+							<div style="font-size: 2.5rem; font-weight: 800; margin: 1rem 0;">€ 19,90</div>
+							<ul style="text-align: left; padding: 0; list-style: none; flex-grow: 1;">
+								<li style="padding: 0.5rem 0;">✅ Perfil Comportamental Completo</li>
+								<li style="padding: 0.5rem 0;">✅ Todas as Áreas com % de Match</li>
+								<li style="padding: 0.5rem 0;">
+									✅ <strong>Análise de Risco IA</strong>
+								</li>
+								<li style="padding: 0.5rem 0;">
+									✅ <strong>Guia de Universidades Globais</strong>
+								</li>
+								<li style="padding: 0.5rem 0;">
+									✅ <strong>Plano de Carreira 5 Anos</strong>
+								</li>
+							</ul>
+							<button class="btn btn-primary" style="width: 100%;">Desbloquear Tudo</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Results Dashboard -->
+			<div id="screen-results" class="screen">
+				<div class="container">
+					<div class="dashboard-grid">
+						<aside class="sidebar-card">
+							<div class="profile-avatar">👤</div>
+							<h2 id="res-profile-title" style="margin-bottom: 0.5rem;"></h2>
+							<div style="height: 4px; width: 40px; background: var(--primary); margin: 0 auto 1.5rem;"></div>
+							<p id="res-profile-desc" style="color: var(--text-light); font-size: 0.9rem;"></p>
+							<button class="btn btn-outline" style="margin-top: 2rem; width: 100%;" onclick="resetApp()">Refazer o Teste</button>
+						</aside>
+
+						<div class="main-results">
+							<div class="result-card">
+								<div class="result-header">
+									<h3>🎯 Áreas de Maior Compatibilidade</h3>
+								</div>
+								<div id="areas-list"></div>
+							</div>
+
+							<div id="premium-content-wrapper" class="premium-lock-wrapper">
+								<div id="lock-overlay" class="lock-overlay" style="display: none;">
+									<div style="text-align: center; padding: 2rem;">
+										<span style="font-size: 3rem;">🔒</span>
+										<h3>Conteúdo Premium</h3>
+										<p>Desbloqueie para ver o risco de IA e recomendações.</p>
+										<button class="btn btn-primary" onclick="showScreen('screen-plans')">Ver Planos</button>
+									</div>
+								</div>
+
+								<div class="result-card content-to-lock">
+									<div class="result-header">
+										<h3>🤖 Risco de Automação IA</h3>
+									</div>
+									<div id="ai-risk-content"></div>
+								</div>
+
+								<div class="result-card content-to-lock">
+									<div class="result-header">
+										<h3>🎓 Instituições Recomendadas</h3>
+									</div>
+									<div id="university-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Support Screen -->
+			<div id="screen-support" class="screen">
+				<div class="container">
+					<div class="legal-container">
+						<h2>Suporte e Feedback 💬</h2>
+						<p style="color: var(--text-light);">Estamos aqui para ajudar. Escreva sua dúvida, crítica ou sugestão abaixo.</p>
+						<div class="support-form">
+							<textarea id="support-message" class="support-textarea" placeholder="Como podemos ajudar você hoje?"></textarea>
+							<button class="btn btn-primary" onclick="submitSupport()">Enviar Mensagem</button>
+							<button class="btn btn-outline" onclick="showScreen('screen-welcome')">Voltar ao Início</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Terms Screen -->
+			<div id="screen-terms" class="screen">
+				<div class="container">
+					<div class="legal-container">
+						<h2>Termos e Condições 📄</h2>
+						<div class="legal-content">
+							<p>
+								<strong>1. Aceitação dos Termos:</strong> Ao acessar o ORION, você concorda em cumprir estes termos de serviço, todas as leis e regulamentos aplicáveis.
+							</p>
+							<p>
+								<strong>2. Uso do Diagnóstico:</strong> O diagnóstico fornecido pelo ORION é baseado em algoritmos estatísticos e não substitui o aconselhamento profissional de carreira ou psicológico.
+							</p>
+							<p>
+								<strong>3. Propriedade Intelectual:</strong> Todo o conteúdo, design e algoritmos são de propriedade exclusiva do ORION.
+							</p>
+							<p>
+								<strong>4. Pagamentos:</strong> O acesso ao Relatório Premium é concedido mediante pagamento único. Não há reembolsos após a visualização dos dados processados.
+							</p>
+							<p>
+								<strong>5. Limitação de Responsabilidade:</strong> O ORION não se responsabiliza por decisões de carreira tomadas com base nos resultados do teste.
+							</p>
+						</div>
+						<button class="btn btn-primary" onclick="showScreen('screen-welcome')">Entendi</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Privacy Screen -->
+			<div id="screen-privacy" class="screen">
+				<div class="container">
+					<div class="legal-container">
+						<h2>Política de Privacidade 🔒</h2>
+						<div class="legal-content">
+							<p>
+								<strong>Coleta de Dados:</strong> Coletamos apenas as respostas fornecidas no diagnóstico e seu e-mail para fins de autenticação e envio de resultados.
+							</p>
+							<p>
+								<strong>Armazenamento Local:</strong> Utilizamos o <em>localStorage</em> do seu navegador para manter sua sessão ativa e salvar seu progresso localmente.
+							</p>
+							<p>
+								<strong>Uso das Informações:</strong> Seus dados são processados anonimamente para gerar seu perfil de carreira. Não vendemos dados para terceiros.
+							</p>
+							<p>
+								<strong>Segurança:</strong> Implementamos medidas de segurança padrão para proteger suas informações contra acesso não autorizado.
+							</p>
+							<p>
+								<strong>Seus Direitos:</strong> Você pode solicitar a exclusão de seus dados a qualquer momento através do nosso canal de suporte.
+							</p>
+						</div>
+						<button class="btn btn-primary" onclick="showScreen('screen-welcome')">Entendi</button>
+					</div>
+				</div>
+			</div>
+
+		</main>
+
+		<footer>
+			<div class="container footer-content">
+				<div>
+					<strong>ORION</strong> © 2026
+				</div>
+				<div style="display: flex; gap: 20px;">
+					<span class="footer-link" onclick="showScreen('screen-privacy')">Privacidade</span>
+					<span class="footer-link" onclick="showScreen('screen-terms')">Termos</span>
+					<span class="footer-link" onclick="showScreen('screen-support')">Suporte</span>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			const APP_STORAGE_KEY = 'ORION_APP_PERSISTENCE_KEY';
+
+			let currentStep = 0;
+			let userAnswers = {};
+			let isPremium = false;
+			let scores = { analytical: 0, creative: 0, social: 0, enterprising: 0, technical: 0, stability: 0 };
+
+			const questionBank = [
+			{ id: 1, type: 'choice', text: "Como você prefere resolver um problema complexo?", options: [
+			{ text: "Analisando dados e fatos friamente", cat: "analytical", val: 5 },
+			{ text: "Buscando uma solução criativa e inédita", cat: "creative", val: 5 },
+			{ text: "Conversando com pessoas envolvidas", cat: "social", val: 5 },
+			{ text: "Colocando a mão na massa e testando", cat: "technical", val: 5 }
+			]},
+			{ id: 2, type: 'choice', text: "Qual ambiente de trabalho mais te atrai?", options: [
+			{ text: "Um laboratório ou centro de pesquisa", cat: "analytical", val: 5 },
+			{ text: "Um estúdio de design ou agência", cat: "creative", val: 5 },
+			{ text: "Uma ONG ou ambiente comunitário", cat: "social", val: 5 },
+			{ text: "Uma oficina ou centro tecnológico", cat: "technical", val: 5 }
+			]},
+			{ id: 3, type: 'choice', text: "Em um projeto, o que te dá mais satisfação?", options: [
+			{ text: "Ver a lógica funcionando perfeitamente", cat: "analytical", val: 5 },
+			{ text: "Ver o impacto visual e estético", cat: "creative", val: 5 },
+			{ text: "Ver as pessoas felizes com o resultado", cat: "social", val: 5 },
+			{ text: "Ver o lucro e o crescimento do negócio", cat: "enterprising", val: 5 }
+			]},
+			{ id: 4, type: 'choice', text: "Como você lida com regras?", options: [
+			{ text: "Sigo à risca para garantir a ordem", cat: "stability", val: 5 },
+			{ text: "Questiono se elas fazem sentido lógico", cat: "analytical", val: 5 },
+			{ text: "Tento contorná-las criativamente", cat: "creative", val: 5 },
+			{ text: "Uso-as para liderar processos", cat: "enterprising", val: 5 }
+			]},
+			{ id: 5, type: 'choice', text: "Qual sua relação com a tecnologia?", options: [
+			{ text: "Quero entender como o código funciona", cat: "technical", val: 5 },
+			{ text: "Uso para otimizar processos de gestão", cat: "stability", val: 5 },
+			{ text: "Uso para criar arte e conteúdo", cat: "creative", val: 5 },
+			{ text: "Uso para conectar pessoas", cat: "social", val: 5 }
+			]},
+			{ id: 6, type: 'choice', text: "Se você fosse abrir uma empresa, seria de:", options: [
+			{ text: "Consultoria de dados", cat: "analytical", val: 5 },
+			{ text: "Moda ou Design", cat: "creative", val: 5 },
+			{ text: "Educação ou Saúde", cat: "social", val: 5 },
+			{ text: "Vendas ou Investimentos", cat: "enterprising", val: 5 }
+			]},
+			{ id: 7, type: 'choice', text: "O que você faz no tempo livre?", options: [
+			{ text: "Leio sobre ciência ou filosofia", cat: "analytical", val: 5 },
+			{ text: "Pinto, desenho ou toco instrumento", cat: "creative", val: 5 },
+			{ text: "Pratico esportes coletivos", cat: "social", val: 5 },
+			{ text: "Organizo minha agenda e finanças", cat: "stability", val: 5 }
+			]},
+			{ id: 8, type: 'choice', text: "Como você prefere aprender algo novo?", options: [
+			{ text: "Lendo manuais e teorias", cat: "analytical", val: 5 },
+			{ text: "Experimentando e errando", cat: "technical", val: 5 },
+			{ text: "Assistindo tutoriais visuais", cat: "creative", val: 5 },
+			{ text: "Em um grupo de discussão", cat: "social", val: 5 }
+			]},
+			{ id: 9, type: 'choice', text: "Qual seu maior medo profissional?", options: [
+			{ text: "Cometer um erro de cálculo", cat: "analytical", val: 5 },
+			{ text: "Ficar estagnado na rotina", cat: "creative", val: 5 },
+			{ text: "Trabalhar isolado de pessoas", cat: "social", val: 5 },
+			{ text: "Perder a estabilidade financeira", cat: "stability", val: 5 }
+			]},
+			{ id: 10, type: 'choice', text: "Como você se vê em 10 anos?", options: [
+			{ text: "Um especialista renomado", cat: "technical", val: 5 },
+			{ text: "Um CEO ou dono de negócio", cat: "enterprising", val: 5 },
+			{ text: "Um mentor ou professor", cat: "social", val: 5 },
+			{ text: "Um artista ou inovador", cat: "creative", val: 5 }
+			]},
+			{ id: 11, type: 'scale', text: "Gosto de analisar planilhas e identificar padrões.", cat: 'analytical' },
+			{ id: 12, type: 'scale', text: "Tenho facilidade em desenhar ou criar conceitos visuais.", cat: 'creative' },
+			{ id: 13, type: 'scale', text: "Sinto prazer em ajudar pessoas a resolverem seus problemas pessoais.", cat: 'social' },
+			{ id: 14, type: 'scale', text: "Sinto-me confortável liderando um grupo de pessoas.", cat: 'enterprising' },
+			{ id: 15, type: 'scale', text: "Gosto de desmontar aparelhos para ver como funcionam.", cat: 'technical' },
+			{ id: 16, type: 'scale', text: "Prefiro ter uma rotina bem definida e previsível.", cat: 'stability' },
+			{ id: 17, type: 'scale', text: "Consigo manter o foco em tarefas detalhistas por muito tempo.", cat: 'analytical' },
+			{ id: 18, type: 'scale', text: "Frequentemente tenho ideias que outros consideram 'fora da caixa'.", cat: 'creative' },
+			{ id: 19, type: 'scale', text: "Sou bom em ouvir e demonstrar empatia.", cat: 'social' },
+			{ id: 20, type: 'scale', text: "Gosto de competir e vencer desafios.", cat: 'enterprising' },
+			{ id: 21, type: 'scale', text: "Tenho facilidade com linguagens de programação ou lógica matemática.", cat: 'technical' },
+			{ id: 22, type: 'scale', text: "Valorizo a segurança de um emprego estável acima de altos riscos.", cat: 'stability' },
+			{ id: 23, type: 'scale', text: "Prefiro decisões baseadas em evidências do que em intuição.", cat: 'analytical' },
+			{ id: 24, type: 'scale', text: "Gosto de escrever histórias, poemas ou roteiros.", cat: 'creative' },
+			{ id: 25, type: 'scale', text: "Trabalhar em equipe é mais produtivo para mim do que sozinho.", cat: 'social' },
+			{ id: 26, type: 'scale', text: "Sou bom em convencer as pessoas sobre o meu ponto de vista.", cat: 'enterprising' },
+			{ id: 27, type: 'scale', text: "Gosto de trabalhar com ferramentas manuais ou máquinas.", cat: 'technical' },
+			{ id: 28, type: 'scale', text: "Organização e limpeza do ambiente são fundamentais para mim.", cat: 'stability' },
+			{ id: 29, type: 'scale', text: "Gosto de pesquisar a fundo antes de comprar qualquer produto.", cat: 'analytical' },
+			{ id: 30, type: 'scale', text: "A estética de um objeto é tão importante quanto sua função.", cat: 'creative' },
+			{ id: 31, type: 'scale', text: "Sinto-me energizado após interagir com muitas pessoas.", cat: 'social' },
+			{ id: 32, type: 'scale', text: "Assumo riscos financeiros se houver chance de grande lucro.", cat: 'enterprising' },
+			{ id: 33, type: 'scale', text: "Tenho curiosidade sobre como softwares e aplicativos são construídos.", cat: 'technical' },
+			{ id: 34, type: 'scale', text: "Sigo processos e manuais sem dificuldade.", cat: 'stability' },
+			{ id: 35, type: 'scale', text: "Sou cético em relação a informações sem comprovação científica.", cat: 'analytical' },
+			{ id: 36, type: 'scale', text: "Gosto de improvisar quando as coisas não saem como planejado.", cat: 'creative' },
+			{ id: 37, type: 'scale', text: "Prefiro profissões que tenham um impacto social direto.", cat: 'social' },
+			{ id: 38, type: 'scale', text: "Gosto de negociar preços e condições.", cat: 'enterprising' },
+			{ id: 39, type: 'scale', text: "Tenho facilidade em consertar coisas quebradas em casa.", cat: 'technical' },
+			{ id: 40, type: 'scale', text: "Documentar e arquivar informações é uma tarefa prazerosa.", cat: 'stability' },
+			{ id: 41, type: 'scale', text: "Gosto de resolver quebra-cabeças e enigmas lógicos.", cat: 'analytical' },
+			{ id: 42, type: 'scale', text: "Aprecio visitas a museus e galerias de arte.", cat: 'creative' },
+			{ id: 43, type: 'scale', text: "Sou a pessoa que os amigos procuram para desabafar.", cat: 'social' },
+			{ id: 44, type: 'scale', text: "Gosto de planejar estratégias para vencer em jogos.", cat: 'enterprising' },
+			{ id: 45, type: 'scale', text: "Interesso-me por robótica e automação.", cat: 'technical' },
+			{ id: 46, type: 'scale', text: "Prefiro trabalhar em horários fixos e bem determinados.", cat: 'stability' },
+			{ id: 47, type: 'scale', text: "Analiso os prós e contras exaustivamente antes de agir.", cat: 'analytical' },
+			{ id: 48, type: 'scale', text: "Gosto de personalizar minhas roupas ou ambiente.", cat: 'creative' },
+			{ id: 49, type: 'scale', text: "Sinto satisfação em ensinar algo a alguém.", cat: 'social' },
+			{ id: 50, type: 'scale', text: "Tenho facilidade em identificar oportunidades de negócio.", cat: 'enterprising' },
+			{ id: 51, type: 'scale', text: "Gosto de entender a física e a química por trás dos materiais.", cat: 'technical' },
+			{ id: 52, type: 'scale', text: "Sou uma pessoa muito pontual e exijo isso dos outros.", cat: 'stability' },
+			{ id: 53, type: 'scale', text: "Gosto de ler artigos científicos ou técnicos.", cat: 'analytical' },
+			{ id: 54, type: 'scale', text: "Prefiro criar algo novo do que melhorar algo existente.", cat: 'creative' },
+			{ id: 55, type: 'scale', text: "Sou bom em mediar conflitos entre amigos.", cat: 'social' },
+			{ id: 56, type: 'scale', text: "Gosto de falar em público e fazer apresentações.", cat: 'enterprising' },
+			{ id: 57, type: 'scale', text: "Tenho facilidade em operar máquinas complexas.", cat: 'technical' },
+			{ id: 58, type: 'scale', text: "Gosto de fazer listas de tarefas e segui-las.", cat: 'stability' },
+			{ id: 59, type: 'scale', text: "Sou bom em detectar falhas em um argumento alheio.", cat: 'analytical' },
+			{ id: 60, type: 'scale', text: "Gosto de experimentar novos estilos de música e arte.", cat: 'creative' },
+			{ id: 61, type: 'scale', text: "Acredito que a colaboração é melhor que a competição.", cat: 'social' },
+			{ id: 62, type: 'scale', text: "Sinto-me motivado por metas de vendas ou desempenho.", cat: 'enterprising' },
+			{ id: 63, type: 'scale', text: "Gosto de montar móveis ou kits de eletrônica.", cat: 'technical' },
+			{ id: 64, type: 'scale', text: "Prefiro ambientes de trabalho silenciosos e organizados.", cat: 'stability' },
+			{ id: 65, type: 'scale', text: "Consigo interpretar gráficos e estatísticas com facilidade.", cat: 'analytical' },
+			{ id: 66, type: 'scale', text: "Gosto de cozinhar pratos novos sem seguir receitas.", cat: 'creative' },
+			{ id: 67, type: 'scale', text: "Fazer networking é uma atividade natural para mim.", cat: 'social' },
+			{ id: 68, type: 'scale', text: "Gosto de delegar tarefas para outras pessoas.", cat: 'enterprising' },
+			{ id: 69, type: 'scale', text: "Interesso-me por como a eletricidade e energia funcionam.", cat: 'technical' },
+			{ id: 70, type: 'scale', text: "Sou muito cuidadoso com prazos e compromissos legais.", cat: 'stability' }
+			];
+
+			function resetApp() {
+			location.reload();
+			}
+
+			function showScreen(id) {
+			document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+			document.getElementById(id).classList.add('active');
+			window.scrollTo(0, 0);
+			}
+
+			function startTest() {
+			showScreen('screen-test');
+			document.getElementById('progress-wrapper').style.display = 'block';
+			renderQuestion();
+			}
+
+			function mockLogin() {
+			const email = document.getElementById('auth-email').value;
+			if (!email.includes('@')) { alert('Insira um e-mail válido'); return; }
+			startTest();
+			}
+
+			function renderQuestion() {
+			const q = questionBank[currentStep];
+			const container = document.getElementById('question-container');
+			const progress = ((currentStep + 1) / questionBank.length) * 100;
+			document.getElementById('progress-bar').style.width = `${progress}%`;
+
+			let html = `
+			<div class="question-header">
+				<span class="question-number">Questão ${currentStep + 1} de ${questionBank.length}</span>
+				<h2 class="question-text">${q.text}</h2>
+			</div>
+			`;
+
+			if (q.type === 'choice') {
+			html += `<div class="options-grid">
+				`;
+				q.options.forEach((opt, idx) => {
+				const isSelected = userAnswers[q.id] && userAnswers[q.id].idx === idx;
+				html += `
+				<div class="option-card ${isSelected ? 'selected' : ''}" onclick="selectOption(${q.id}, ${idx})">
+					<div style="width:24px; height:24px; border-radius:50%; border:2px solid ${isSelected ? 'var(--primary)' : '#cbd5e1'}; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">
+						${isSelected ? '✓' : ''}
+					</div>
+					<span>${opt.text}</span>
+				</div>
+				`;
+				});
+				html += `
+			</div>`;
+			} else if (q.type === 'scale') {
+			html += `<div class="scale-wrapper">
+				`;
+				for (let i = 1; i <= 5; i++) {
+				const isSelected = userAnswers[q.id] === i;
+				html += `<div class="scale-point ${isSelected ? 'selected' : ''}" onclick="selectScale(${q.id}, ${i})">${i}</div>`;
+				}
+				html += `
+			</div>
+			<div class="scale-labels">
+				<span>Discordo Totalmente</span>
+				<span>Concordo Totalmente</span>
+			</div>`;
+			}
+
+			container.innerHTML = html;
+			document.getElementById('btn-back').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+			document.getElementById('btn-next').innerText = currentStep === questionBank.length - 1 ? 'Finalizar' : 'Próximo';
+			}
+
+			function selectOption(qId, idx) {
+			const q = questionBank.find(x => x.id === qId);
+			userAnswers[qId] = { idx, ...q.options[idx] };
+			renderQuestion();
+			}
+
+			function selectScale(qId, val) {
+			userAnswers[qId] = val;
+			renderQuestion();
+			}
+
+			function nextQuestion() {
+			if (!userAnswers[questionBank[currentStep].id]) {
+			alert("Por favor, responda para continuar.");
+			return;
+			}
+			if (currentStep < questionBank.length - 1) {
+                currentStep++;
+                renderQuestion();
+            } else {
+                processResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderQuestion();
+            }
+        }
+
+        function processResults() {
+            showScreen('screen-analysis');
+            let count = 0;
+            const titles = ["Analisando padrões...", "Calculando correlações...", "Avaliando risco de IA...", "Gerando recomendações..."];
+            const interval = setInterval(() => {
+                if (count < titles.length) {
+                    document.getElementById('analysis-title').innerText = titles[count++];
+                } else {
+                    clearInterval(interval);
+                    calculateScores();
+                    showScreen('screen-plans');
+                }
+            }, 1000);
+        }
+
+        function calculateScores() {
+            Object.keys(scores).forEach(k => scores[k] = 0);
+            questionBank.forEach(q => {
+                const ans = userAnswers[q.id];
+                if (q.type === 'scale') {
+                    scores[q.cat] += (ans * 2);
+                } else {
+                    scores[ans.cat] += ans.val;
+                }
+            });
+            saveData();
+        }
+
+        function selectPlan(plan) {
+            isPremium = (plan === 'premium');
+            displayResults();
+        }
+
+        function displayResults() {
+            showScreen('screen-results');
+            document.getElementById('progress-wrapper').style.display = 'none';
+
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const topTrait = sorted[0][0];
+            
+            const profiles = {
+                analytical: { t: "Estrategista de Dados", d: "Sua mente funciona como um processador de alta precisão. Você brilha em ambientes que exigem lógica, análise fria e resolução de problemas complexos." },
+                creative: { t: "Inovador Visionário", d: "Você vê o mundo através de possibilidades. Sua força está na criação do novo, na estética e na quebra de paradigmas tradicionais." },
+                social: { t: "Líder Empático", d: "Sua inteligência emocional é seu maior ativo. Você prospera conectando pessoas, ensinando e gerando impacto social positivo." },
+                enterprising: { t: "Arquiteto de Negócios", d: "Você nasceu para liderar e conquistar. Movido por metas e desafios, você tem o perfil ideal para o mundo corporativo e empreendedorismo." },
+                technical: { t: "Mestre da Tecnologia", d: "Você domina a interface entre o humano e a máquina. Sua curiosidade técnica permite que você construa e otimize o mundo moderno." },
+                stability: { t: "Guardião da Eficiência", d: "Você é a base sólida de qualquer organização. Sua capacidade de organizar, planejar e manter a ordem é vital para o sucesso a longo prazo." }
+            };
+
+            const p = profiles[topTrait];
+            document.getElementById('res-profile-title').innerText = p.t;
+            document.getElementById('res-profile-desc').innerText = p.d;
+
+            renderAreas(topTrait, sorted[1][0]);
+            
+            if (isPremium) {
+                document.getElementById('lock-overlay').style.display = 'none';
+                document.querySelectorAll('.content-to-lock').forEach(el => el.classList.remove('blur-content'));
+                renderPremiumData(topTrait);
+            } else {
+                document.getElementById('lock-overlay').style.display = 'flex';
+                document.querySelectorAll('.content-to-lock').forEach(el => el.classList.add('blur-content'));
+                renderPremiumData(topTrait);
+            }
+        }
+
+        function renderAreas(t1, t2) {
+            const areaMap = {
+                analytical: ["Cientista de Dados", "Analista Financeiro", "Engenheiro de IA", "Pesquisador"],
+                creative: ["Designer de Produto", "Diretor de Arte", "Arquiteto", "Escritor Criativo"],
+                social: ["Psicólogo", "Gestor de RH", "Professor Universitário", "Diplomata"],
+                enterprising: ["CEO / Fundador", "Gerente de Projetos", "Diretor Comercial", "Consultor"],
+                technical: ["Desenvolvedor Full Stack", "Engenheiro Mecânico", "Especialista em Cloud", "Cibersegurança"],
+                stability: ["Administrador Público", "Controlador de Qualidade", "Logística", "Contador"]
+            };
+
+            const areas = [...areaMap[t1].slice(0, 2), ...areaMap[t2].slice(0, 2)];
+            let html = '';
+            areas.forEach(a => {
+                const match = Math.floor(Math.random() * 15) + 85;
+                html += `<div class="area-item">
+				<span>${a}</span>
+				<strong>${match}% Match</strong>
+			</div>`;
+			});
+			document.getElementById('areas-list').innerHTML = html;
+			}
+
+			function renderPremiumData(trait) {
+			const risks = {
+			analytical: 45, creative: 15, social: 10, enterprising: 25, technical: 60, stability: 80
+			};
+			const r = risks[trait];
+			document.getElementById('ai-risk-content').innerHTML = `
+			<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+				<span>Probabilidade de Automação</span>
+				<strong>${r}%</strong>
+			</div>
+			<div style="height:12px; background:#e2e8f0; border-radius:6px; overflow:hidden;">
+				<div style="height:100%; width:${r}%; background: linear-gradient(90deg, #22c55e, #ef4444);"></div>
+			</div>
+			<p style="font-size:0.85rem; color:var(--text-light); margin-top:10px;">
+				${r > 50 ? "Atenção: Sua área sofrerá forte impacto. Foque em habilidades de supervisão de IA." : "Sua área é resiliente à IA. Foque em criatividade e julgamento humano."}
+			</p>
+			`;
+
+			const unis = ["Stanford University", "MIT", "Oxford", "USP", "Universidade de Coimbra", "ETH Zurich"];
+			document.getElementById('university-list').innerHTML = unis.sort(() => 0.5 - Math.random()).slice(0, 4).map(u =>
+			`<div style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:0.85rem;">🏛️ ${u}</div>`
+			).join('');
+			}
+
+			function scrollToFeatures() {
+			document.getElementById('features-section').scrollIntoView({ behavior: 'smooth' });
+			}
+
+			function submitSupport() {
+			const msg = document.getElementById('support-message').value;
+			if (msg.trim().length < 10) {
+                alert("Por favor, descreva melhor sua solicitação.");
+                return;
+            }
+            alert("Obrigado pelo seu feedback! Nossa equipe entrará em contato se necessário.");
+            document.getElementById('support-message').value = '';
+            showScreen('screen-welcome');
+        }
+
+        function saveData() {
+            const data = { scores, userAnswers, isPremium };
+            localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem(APP_STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                scores = data.scores || scores;
+                userAnswers = data.userAnswers || userAnswers;
+                isPremium = data.isPremium || false;
+            }
+        }
+
+        document.body.addEventListener('dblclick', function(event) { event.preventDefault(); });
+        window.addEventListener('load', loadData);
+		</script>
+	</body>
+</html>
